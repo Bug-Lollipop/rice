@@ -196,6 +196,24 @@ Yoga 避免了不必要的级联样式， 专注于 flexbox 的实现。这给�
 
 react-sketchapp 让我们根据 Sketch 的文档, 自动生成跨平台的 react 组件。 这颠覆了开发者和设计师过去的合作方式。 现在, 当我们想改变组件的 UI 时， 我们只需要改变设计， 反之同理。
 
+### 缺点
+Gajus Kuizinas 的[Stop using CSS in JavaScript for web development](https://medium.com/@gajus/stop-using-css-in-javascript-for-web-development-fa32fb873dcc) 阐述了CSS in JSS 的缺点的文章。
+这篇作者是 react-css-modules 的作者，所以观点会有一些偏颇。但整体上还是认可的，社区里流行的 css-in-js 有点过于理想主义，低估了 CSS 本身的能力和生态。这篇文章表面是在讲 CSS in JS，实际上是 CSS Modules 支持者与 styled-components 拥护之间的唇枪舌剑、你来我往。
+文中提到第1点，css-in-js 号称解决的命名空间和样式冲突的问题早已不是问题。为了解决这些问题，社区里的解决方案也是出了一茬又一茬，还有人维护了一份完整的
+[CSS in JS ] 
+但是确实 CSS in JS 有适用的场景，但是也有局限性：
+ #### 1.不适用于做样式需要定制的组件
+ 样式就像小孩的脸，说变就变。比如是最简单的 button，可能在用的时候由于场景不同，需要设置不同的 font-size，height，width，border 等等，如果全部使用 css-in-js 那将需要把每个样式都变成 props，如果这个组件的 dom 还有多层级呢？你是无法把所有样式都添加到 props 中。同时也不能全部设置成变量，那就丧失了单独定制某个组件的能力。
+ css-in-js 生成的 className 通常是不稳定的随机串，这就给外部想灵活覆盖样式增加了困难。
+ 
+ #### 2.适用于偏逻辑型，样式比较少，且不太需要外部覆盖样式的场景。
+ 
+ 如果是要做一个组件库，让使用方拿着npm就能直接用，样式全部自己搞定，不需要依赖其它组件，如 react-dnd 这种，比较适合。
+ 
+ #### 3.适用于 react-native 这类本身就没有 css 的运行环境。
+
+
+第4点论扩展性我也觉得 CSS 占优，第5点需要设置条件样式我觉得 CSS 方案也是更好的，而且 CSS 会更易于调试。
 ### 事例
 `<div class="my-heading">`
 
