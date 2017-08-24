@@ -89,7 +89,7 @@ html { font-size: 12px; }
 当我们改动了 menu 这个样式，谁知道会发生什么呢？<a> 最终影响的到底是 list 呢还是 button group 呢？如果我们的 dom 结构再变化，还会影响什么呢？要靠猜的吧！hhh...
 
 ### CSS in JS
-上面的问题，前5个都可以解决，但是6和7 却不是很好去解决，继续引入CSS，反而会将情况变得更复杂。尝试一下用 inline-style 写 React 样式
+上面的问题，前5个都可以解决，但是6和7却不是很好去解决，继续引入CSS，反而会将情况变得更复杂。尝试一下用 inline-style 写 React 样式
 ```
 var styles = {
   container: {
@@ -103,7 +103,7 @@ var styles = {
 <div style={styles.container}></div>
 
 ```
-除了结构化的 JS 对象，以及 CSS 属性变成了驼峰命名，px 值变成了数字，inline style 好像没那么糟糕了，不是吗？因为这里的 inline，并不是变成了 style="a:1; b:2; c:3;" 这样难以辨认的字符串，而是让你用 js 的对象来定义，只在 React 组件的 style 属性那里传入一下样式的引用。JS 对象，就好像映射了一个个 CSS 的 class，而 inline style refer，就是一个隔离的好办法。
+除了结构化的 JS 对象，以及 CSS 属性变成了驼峰命名，px 值变成了数字，inline style 好像没那么糟糕了，不是吗？因为这里的 inline，并不是变成了 style="a:1; b:2; c:3;" 这样难以辨认的字符串，而是让你用 js 的对象来定义，只在 React 组件的 style 属性那里传入一下样式的引用。JS对象，就好像映射了一个个 CSS 的 class，而 inline style refer，就是一个隔离的好办法。
 当引入 JS 后，玩法就更多了。我们甚至可以加入逻辑，比如函数、条件等等
 ```
 propTypes: {
@@ -118,7 +118,8 @@ propTypes: {
 用以上的代码，我们已经完成了一个样式根据状态的变化：当变成 isDepressed (被按下) 的状态，就应用 depressed 的样式。
 
 ### PPT总结
-综上所述可以理解为，FB 发现 CSS 不好解决的问题可以通过 JS 来解决，所以用了 JS。而不是强行必须照搬 Web 开发原有的一套。React 在 Web 端其实还是可以使用 CSS 的，用 className 的话。但 React Native 就不行了，但有了这样的样式设计，无论是为了解决问题，还是减少 RN 实现复杂度，都有极大的帮助，所以 RN 最后的官方 doc 说的是压根没实现 CSS。(我并不知道他们以后打不打算实现 CSS)
+综上所述可以理解为，FB 发现 CSS 不好解决的问题可以通过 JS 来解决，所以用了 JS。而不是强行必须照搬 Web 开发原有的一套。React 可以在 Web 端用className去使用 CSS 。但 React Native 就不行了，但有了这样的样式设计，无论是为了解决问题，还是减少 RN 实现复杂度，都有极大的帮助。
+
 ### 事例
 `<div class="my-heading">`
 
