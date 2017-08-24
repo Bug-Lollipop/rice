@@ -147,11 +147,55 @@ console.log(title)
 早期 CSS-in-JS 类直接将样式绑定在每一个元素上, 元素上的 style 无法代替 css 的所有功能。
 但是新的类库基本上会生成全局的样式, 实时进行插入和删除。
 例如：
- JSS，使用 JSS 可以实现像是 hover, @media 之类的功能, 直接生成相同的 css 代码
- styled-components，接创建样式关联的组件
-但是新的类库基本上会生成全局的样式, 实时进行插入和删除。例如JSS，使用 JSS 可以实现像是 hover, @media 之类的功能, 直接生成相同的 css 代码
- Glamorous，提供了和 styled-components 相似的 component-first API，但是object 定义样式而非字符串
-#### 2.
+ JSS，可以实现像是 hover, @media 之类的功能, 直接生成相同的 css 代码
+ 
+ styled-components，直接创建样式关联的组件
+ 
+ Glamorous，提供了和 styled-components 相似的 component-first API，但是是用 object 定义样式而非字符串，这种做法更方便以后减少样式体积或是提高性能。
+ 
+#### 2.关键样式
+最近相对流行的做法是在文档的顶部引入当前页需要的内联样式来优化页面加载时间. 这与传统加载样式的方式不同, 需要等所有样式都加载完毕才开始进行渲染.
+CSS-in-JS 就不一样了：
+举个例子, Aphrodite 通过在元素上绑定 class 时调用 CSS 函数跟踪一次渲染所需要哪些样式.
+```
+import { StyleSheet, css } from 'aphrodite'
+const styles = StyleSheet.create({
+  title: { ... }
+})
+const Heading = ({ children }) => (
+  <h1 className={css(styles.heading)}>{ children }</h1>
+)
+```
+即使样式是通过 js 定义的, 也可以很方便找到当前页面上的全部样式, 并在 server render 时以<style>形式插入文档顶部
+由于渲染 HTML 和 CSS 的时间是一致的， Aphrodite之类的工具通常会同时计算关键样式并渲染出 HTML. 渲染 React 组件的过程也是相似的.
+```
+const appHtml = `
+  <div id="root">
+    ${html}
+  </div>
+`
+```
+服务端使用 CSS-in-JS, 不但能让客户端没有 JavaScript 的场合下正常工作, 还能渲染的更快.
+
+#### 3.更智能的优化
+例如[Styletron](https://github.com/rtsao/styletron) : 核心API 只做一件事情, 将样式分组, 然后生成对应 className。放弃对 class 的直接管理, 仅仅声明我们需要的样式. 由库自己去进行 class 命名的优化，减少代码文件体积
+#### 4. 包管理
+例如[Polished](https://github.com/styled-components/polished) 提供了一套完善的混合/色彩函数/快捷操作等工具。 有一点像 JavaScript 版的 Sass. 关键差别在于 Polished 生成的代码能更好的组合/测试/分享, 并完全适用于 js 包管理的生态。
+
+#### 5.非浏览器平台样式
+ 例如[ReactNative](https://facebook.github.io/react-native/)做的事情, 用 JavaScript 语法写原生应用, 最终生成原生组件， 用 Text 和 View 代替 div 和 span。
+  在浏览器之外, React Native 也实现了一套 Native 的 flexbox.这个功能最早作为一个名为 css-layout 的 JavaScript 包被发布, 后来又被重构成了 C。
+  
+鉴于其被广泛使用及重要性， 最终诞生了Facebook开源跨平台前端布局引擎: [Yoga](https://facebook.github.io/yoga/)
+
+Yoga 避免了不必要的级联样式， 专注于 flexbox 的实现。这给跨平台(cross-platform)组件带来了许多可能性。
+
+其中一个惊喜是 airbnb 的 [react-sketchapp](http://airbnb.io/react-sketchapp/)。
+
+直到 react-sketchapp的到来前, 我们还是不得不将前端开发和设计单独进行。
+
+react-sketchapp 让我们根据 Sketch 的文档, 自动生成跨平台的 react 组件。 这颠覆了开发者和设计师过去的合作方式。 现在, 当我们想改变组件的 UI 时， 我们只需要改变设计， 反之同理。
+
 ### 事例
 `<div class="my-heading">`
 
