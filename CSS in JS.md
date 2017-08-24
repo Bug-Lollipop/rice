@@ -120,6 +120,38 @@ propTypes: {
 ### PPT总结
 综上所述可以理解为，FB 发现 CSS 不好解决的问题可以通过 JS 来解决，所以用了 JS。而不是强行必须照搬 Web 开发原有的一套。React 可以在 Web 端用className去使用 CSS 。但 React Native 就不行了，但有了这样的样式设计，无论是为了解决问题，还是减少 RN 实现复杂度，都有极大的帮助。
 
+### 优点
+Mark Dalgleish 写的 [A Unified Styling Language](https://medium.com/seek-blog/a-unified-styling-language-d0c208de2660) 文章，阐述了CSS in JS 的一些优点，主要概括为一下几项：
+ 1. 范围约束
+ 2. 关键样式 (Critical CSS)
+ 3. 更智能的优化
+ 4. 包管理
+ 5. 非浏览器平台样式 (Non-browser styling)
+ #### 1.范围约束
+  CSS 社区投入了很大精力想解决这个问题, 通过一些方式增加样式的可维护性, 例如 OOCSS, SMACSS 等. 其中最流行的是来自 Yandex 的 BEM, Block Element Modifier.
+  BEM( 纯 CSS 实现)只是一个命名约定, 通过像是 .Block__element--modifier 的 class 限制样式. 在 BEM 的项目中, 开发者不得不在所有场合遵循 BEM 规则, 能做到这一点, BEM 是很好用的, 但范围限制只能以纯粹的规范来约束么?
+实际上， 大多数的CSS in JSS 都是遵循BEM的，用不同的方式将样式定位到某一元素中，例如：
+```
+import { css } from 'glamor'
+const title = css({
+  fontSize: '1.8em',
+  fontFamily: 'Comic Sans MS',
+  color: 'blue'
+})
+console.log(title)
+// → 'css-1pyvz'
+```
+这段代码中 CSS class 并没有出现，对样式的引入不需要在代码里写死，而是由库去自动生成，从而不用担心选择器会全局冲突，也就意味着我们不需要手机加BEM这种形式的前缀，选择器的范围就是代码的范围，如果想让这规则在整个应用中适用，可以以JS 模块的方式引入，对于长期维护项目是很强大的，可以确保样式可以向其他资源一样被轻易追踪到，从简单的规范约束到代码约束，提高了样式代码的基础质量。
+
+还有很重要的一点是：生成的样式是CSS，而不是行内样式
+早期 CSS-in-JS 类直接将样式绑定在每一个元素上, 元素上的 style 无法代替 css 的所有功能。
+但是新的类库基本上会生成全局的样式, 实时进行插入和删除。
+例如：
+ JSS，使用 JSS 可以实现像是 hover, @media 之类的功能, 直接生成相同的 css 代码
+ styled-components，接创建样式关联的组件
+但是新的类库基本上会生成全局的样式, 实时进行插入和删除。例如JSS，使用 JSS 可以实现像是 hover, @media 之类的功能, 直接生成相同的 css 代码
+ Glamorous，提供了和 styled-components 相似的 component-first API，但是object 定义样式而非字符串
+#### 2.
 ### 事例
 `<div class="my-heading">`
 
