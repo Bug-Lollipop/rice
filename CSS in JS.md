@@ -34,7 +34,9 @@ Vjeux 认为，我们应该使用 Javascript 编写CSS，以获得使用真正�
 <div className={cx("button/container")}>
 ```
 #### 2.CSS 文件之间可能存在依赖
-   一直以来，我们在开发中需要什么样式，就会通过 require CSS 将 CSS 文件引入。不过一个问题来了，有的时候有些文件已经被其他人 require 了一些 CSS 但你不知道，不过依旧能正常运行（这其实很不安全不是么？！万一哪天 break down 了很难找问题）。
+   一直以来，我们在开发中需要什么样式，就会通过 require CSS 将 CSS 文件引入。
+   
+   不过一个问题来了，有的时候有些文件已经被其他人 require 了一些 CSS 但你不知道，不过依旧能正常运行（这其实很不安全不是么？！万一哪天 break down 了很难找问题）。
 
 cx 可以支持一些静态分析，帮助你避免这类问题，所以 issue 2，我们也算解决了。
 #### 3.消除 Dead Code
@@ -69,9 +71,12 @@ html { font-size: 12px; }
 .small { font-size: 22px; }
 ```
 上面 `<div lcass="small"> 你好</div> ` 最终的字体大小是22px,这种方式常用于我们去自定义覆盖组件的样式，比如我们基于Element 组件 做一些修改，定制，用自己的CSS 样式文件去覆盖某些选择器上已有的样式。
+
 这个不是重点，重点是不是在所有的情况下，CSS 文件只有一个。如果某一个样式写在不同的文件，而这些文件是异步加载的，浏览器收到统一选择器的样式顺序就不一定了。
+
 #### 7.隔离
 假设我们有一套基础的 UI 库，可以给大家用，例如Element。包含 NavMenu、messageBox、Pagination 等，每个组件都做了很多场景的展现，不过当设计和开发希望加入一些新特性的时候，我们可能需要和提出此需求的团队沟通，看看怎么样才比较合适，实现他们的需求。
+
 最后搞定了，开发人员写了很多trick 语法来兼容各个团队的需求，但是，后期可能会发现，新需求影响了组件内的很多东西，因为这样做很容易破坏各个选择器之间的隔离性
 
 ```
@@ -103,7 +108,10 @@ var styles = {
 <div style={styles.container}></div>
 
 ```
-除了结构化的 JS 对象，以及 CSS 属性变成了驼峰命名，px 值变成了数字，inline style 好像没那么糟糕了，不是吗？因为这里的 inline，并不是变成了 style="a:1; b:2; c:3;" 这样难以辨认的字符串，而是让你用 js 的对象来定义，只在 React 组件的 style 属性那里传入一下样式的引用。JS对象，就好像映射了一个个 CSS 的 class，而 inline style refer，就是一个隔离的好办法。
+除了结构化的 JS 对象，以及 CSS 属性变成了驼峰命名，px 值变成了数字，inline style 好像没那么糟糕了，不是吗？
+
+因为这里的 inline，并不是变成了 style="a:1; b:2; c:3;" 这样难以辨认的字符串，而是让你用 js 的对象来定义，只在 React 组件的 style 属性那里传入一下样式的引用。JS对象，就好像映射了一个个 CSS 的 class，而 inline style refer，就是一个隔离的好办法。
+
 当引入 JS 后，玩法就更多了。我们甚至可以加入逻辑，比如函数、条件等等
 ```
 propTypes: {
@@ -118,7 +126,9 @@ propTypes: {
 用以上的代码，我们已经完成了一个样式根据状态的变化：当变成 isDepressed (被按下) 的状态，就应用 depressed 的样式。
 
 ### PPT总结
-综上所述可以理解为，FB 发现 CSS 不好解决的问题可以通过 JS 来解决，所以用了 JS。而不是强行必须照搬 Web 开发原有的一套。React 可以在 Web 端用className去使用 CSS 。但 React Native 就不行了，但有了这样的样式设计，无论是为了解决问题，还是减少 RN 实现复杂度，都有极大的帮助。
+综上所述可以理解为，FB 发现 CSS 不好解决的问题可以通过 JS 来解决，所以用了 JS。而不是强行必须照搬 Web 开发原有的一套。
+
+React 可以在 Web 端用className去使用 CSS 。但 React Native 就不行了，但有了这样的样式设计，无论是为了解决问题，还是减少 RN 实现复杂度，都有极大的帮助。
 
 ### 优点
 Mark Dalgleish 写的 [A Unified Styling Language](https://medium.com/seek-blog/a-unified-styling-language-d0c208de2660) 文章，阐述了CSS in JS 的一些优点，主要概括为一下几项：
@@ -128,7 +138,8 @@ Mark Dalgleish 写的 [A Unified Styling Language](https://medium.com/seek-blog/
  4. 包管理
  5. 非浏览器平台样式 (Non-browser styling)
  #### 1.范围约束
-  CSS 社区投入了很大精力想解决这个问题, 通过一些方式增加样式的可维护性, 例如 OOCSS, SMACSS 等. 其中最流行的是来自 Yandex 的 BEM, Block Element Modifier.
+  CSS 社区投入了很大精力想解决这个问题, 通过一些方式增加样式的可维护性, 例如 OOCSS, SMACSS 等. 其中最流行的是来自 Yandex 的 BEM, Block Element Modifier。
+  
   BEM( 纯 CSS 实现)只是一个命名约定, 通过像是 .Block__element--modifier 的 class 限制样式. 在 BEM 的项目中, 开发者不得不在所有场合遵循 BEM 规则, 能做到这一点, BEM 是很好用的, 但范围限制只能以纯粹的规范来约束么?
 实际上， 大多数的CSS in JSS 都是遵循BEM的，用不同的方式将样式定位到某一元素中，例如：
 ```
@@ -141,7 +152,10 @@ const title = css({
 console.log(title)
 // → 'css-1pyvz'
 ```
-这段代码中 CSS class 并没有出现，对样式的引入不需要在代码里写死，而是由库去自动生成，从而不用担心选择器会全局冲突，也就意味着我们不需要手机加BEM这种形式的前缀，选择器的范围就是代码的范围，如果想让这规则在整个应用中适用，可以以JS 模块的方式引入，对于长期维护项目是很强大的，可以确保样式可以向其他资源一样被轻易追踪到，从简单的规范约束到代码约束，提高了样式代码的基础质量。
+
+这段代码中 CSS class 并没有出现，对样式的引入不需要在代码里写死，而是由库去自动生成，从而不用担心选择器会全局冲突，也就意味着我们不需要手机加BEM这种形式的前缀，选择器的范围就是代码的范围。
+
+如果想让这规则在整个应用中适用，可以以JS 模块的方式引入，对于长期维护项目是很强大的，可以确保样式可以向其他资源一样被轻易追踪到，从简单的规范约束到代码约束，提高了样式代码的基础质量。
 
 还有很重要的一点是：生成的样式是CSS，而不是行内样式
 早期 CSS-in-JS 类直接将样式绑定在每一个元素上, 元素上的 style 无法代替 css 的所有功能。
@@ -178,7 +192,8 @@ const appHtml = `
 服务端使用 CSS-in-JS, 不但能让客户端没有 JavaScript 的场合下正常工作, 还能渲染的更快.
 
 #### 3.更智能的优化
-例如[Styletron](https://github.com/rtsao/styletron) : 核心API 只做一件事情, 将样式分组, 然后生成对应 className。放弃对 class 的直接管理, 仅仅声明我们需要的样式. 由库自己去进行 class 命名的优化，减少代码文件体积
+例如[Styletron](https://github.com/rtsao/styletron) : 核心API 只做一件事情, 将样式分组, 然后生成对应 className。放弃对 class 的直接管理, 仅仅声明我们需要的样式. 由库自己去进行 class 命名的优化，减少代码文件体积。
+
 #### 4. 包管理
 例如[Polished](https://github.com/styled-components/polished) 提供了一套完善的混合/色彩函数/快捷操作等工具。 有一点像 JavaScript 版的 Sass. 关键差别在于 Polished 生成的代码能更好的组合/测试/分享, 并完全适用于 js 包管理的生态。
 
@@ -187,21 +202,24 @@ const appHtml = `
   在浏览器之外, React Native 也实现了一套 Native 的 flexbox.这个功能最早作为一个名为 css-layout 的 JavaScript 包被发布, 后来又被重构成了 C。
   
 鉴于其被广泛使用及重要性， 最终诞生了Facebook开源跨平台前端布局引擎: [Yoga](https://facebook.github.io/yoga/)
-
 Yoga 避免了不必要的级联样式， 专注于 flexbox 的实现。这给跨平台(cross-platform)组件带来了许多可能性。
 
 其中一个惊喜是 airbnb 的 [react-sketchapp](http://airbnb.io/react-sketchapp/)。
-
 直到 react-sketchapp的到来前, 我们还是不得不将前端开发和设计单独进行。
 
 react-sketchapp 让我们根据 Sketch 的文档, 自动生成跨平台的 react 组件。 这颠覆了开发者和设计师过去的合作方式。 现在, 当我们想改变组件的 UI 时， 我们只需要改变设计， 反之同理。
 
 ### 缺点
 Gajus Kuizinas 的[Stop using CSS in JavaScript for web development](https://medium.com/@gajus/stop-using-css-in-javascript-for-web-development-fa32fb873dcc) 举出了 CSS in JSS 一些缺点。
+
 这篇作者是 react-css-modules 的作者，表面是在讲 CSS in JS，实际上是 CSS Modules 支持者与 styled-components 拥护之间的唇枪舌剑、你来我往。所以观点会有一些偏颇，但整体上还是认可的，社区里流行的 css-in-js 有点过于理想主义，低估了 CSS 本身的能力和生态。
-从 2014 年 Vjeux 的演讲开始，css-in-js 的轮子层出不穷，文中提到第1点，css-in-js 号称解决的命名空间和样式冲突的问题早已不是问题。为了解决这些问题，社区里的解决方案也是出了一茬又一茬，还有人维护了一份完整的[CSS in JS ] ，但是确实 CSS in JS 有适用的场景，但是也有局限性：
+
+从 2014 年 Vjeux 的演讲开始，css-in-js 的轮子层出不穷，文中提到第1点，css-in-js 号称解决的命名空间和样式冲突的问题早已不是问题。为了解决这些问题，社区里的解决方案也是出了一茬又一茬，还有人维护了一份完整的[CSS in JS ](https://github.com/MicheleBertoli/css-in-js) ，但是确实 CSS in JS 有适用的场景，但是也有局限性：
+
  #### 1.不适用于做样式需要定制的组件，缺乏扩展性
- 样式就像小孩的脸，说变就变。比如是最简单的 button，可能在用的时候由于场景不同，需要设置不同的 font-size，height，width，border 等等，如果全部使用 css-in-js 那将需要把每个样式都变成 props，如果这个组件的 dom 还有多层级呢？你是无法把所有样式都添加到 props 中。同时也不能全部设置成变量，那就丧失了单独定制某个组件的能力。
+ 样式就像小孩的脸，说变就变。比如是最简单的 button，可能在用的时候由于场景不同，需要设置不同的 font-size，height，width，border 等等，如果全部使用 css-in-js 那将需要把每个样式都变成 props，如果这个组件的 dom 还有多层级呢？
+ 
+ 你是无法把所有样式都添加到 props 中。同时也不能全部设置成变量，那就丧失了单独定制某个组件的能力。
  css-in-js 生成的 className 通常是不稳定的随机串，这就给外部想灵活覆盖样式增加了困难。
  
  #### 2.适用于偏逻辑型，样式比较少，且不太需要外部覆盖样式的场景。
