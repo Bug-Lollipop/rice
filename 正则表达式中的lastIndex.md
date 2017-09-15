@@ -15,13 +15,17 @@ console.log(reg2.test('abcabc')); // false
 console.log(reg2.test('abcabc')); // true
 
 上面的正则是 查看字符串abcabc 是否有字符a,但是结果中却又一个特殊的 false 存在，Why?
+```
 
 ### lastIndex（针对于带参数g的正则表达式）
+
 在每个实例化的RegExp对象中，都存在一个lastIndex属性，其初始值为0
+
 ```
 /a/.lastIndex // 0
 new RegExp('a').lastIndex // 0
 ```
+
  `lastIndex`表示匹配成功时候，匹配内容最后一个字符所在原字符串中的位置 + 1，
 也就是匹配内容的下一个字符的index（如果匹配内容在字符串的结尾，同样返回原字符串中的位置 + 1，也就是字符串的length）。
 如果未带参数g，`lastIndex`始终为 0。
@@ -60,4 +64,5 @@ console.log(reg.test('12ab34ab'), reg.lastIndex); // false 0
 console.log(reg.test('12ab34ab'), reg.lastIndex); // true 4
 
 ```
-
+### 问题解决
+把全局 `g` 去掉
