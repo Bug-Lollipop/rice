@@ -301,3 +301,11 @@ console.log(validate(schema, {first:'Bruce',last:'Wayne'})); // true
 改成
 
 ` ~~4.9 === 4 // true `
+
+
+------
+追加：
+https://segmentfault.com/a/1190000010181410
+https://segmentfault.com/a/1190000010136950
+https://segmentfault.com/a/1190000010936719
+https://segmentfault.com/a/1190000002474610
