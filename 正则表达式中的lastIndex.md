@@ -14,8 +14,8 @@ console.log(reg2.test('abcabc')); // true
 console.log(reg2.test('abcabc')); // false
 console.log(reg2.test('abcabc')); // true
 
-上面的正则是 查看字符串abcabc 是否有字符a,但是结果中却又一个特殊的 false 存在，Why?
 ```
+上面的正则是 查看字符串abcabc 是否有字符a,但是结果中却又一个特殊的 false 存在，Why?
 
 ### lastIndex（针对于带参数g的正则表达式）
 
