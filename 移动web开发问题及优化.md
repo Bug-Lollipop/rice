@@ -40,6 +40,7 @@
 ### 6.移动端click屏幕产生200-300 ms的延迟响应
 click事件因为要等待确认是否是双击事件，会有300ms的延迟（两次点击事件间隔小于300ms就认为是双击），体验并不好。
 现在的解决方案，第一个就是采用touchstart或者touchend代替click。
+
 或者封装tap事件来代替click 事件，所谓的tap事件由touchstart事件+ touchmove（判断是否是滑动事件）+touchend事件封装组成。
 ![示例图](https://sfault-image.b0.upaiyun.com/240/529/240529230-59c132356973f)
 在手机上，click的延迟将近400ms。对于用户而言，是一个很严重的延迟了！所以在手机上，并不建议用click
